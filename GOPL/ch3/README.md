@@ -1,17 +1,17 @@
 # GOPL CH3  
 
 ### 3.4 Bool
-true, false 값을 가진다
-다른 언어와 달리 0,1 사용불가
-== 또는 < 같은 비교연산자는 불리언 결과를 생성한다.
-권장사항 x == true 와 같은 중복된표현 지양해야 한다. x로 간소화
+true, false 값을 가진다  
+다른 언어와 달리 0,1 사용불가  
+== 또는 < 같은 비교연산자는 불리언 결과를 생성한다.  
+권장사항 x == true 와 같은 중복된표현 지양해야 한다. >> x로 간소화  
 
 ```
-if 'a' <= c && c <= 'z' ||
-    'A' <= c && c <= 'Z' ||
-    '0' <= c && c <= '9' {
-    // ...ASCII letter or digit...
-}
+	if 'a' <= c && c <= 'z' ||
+	    'A' <= c && c <= 'Z' ||
+	    '0' <= c && c <= '9' {
+	    // ...ASCII letter or digit...
+	}
 ```
 	
 ### 3.5 문자열 (stirg)  
@@ -26,19 +26,19 @@ len(문자열) : 문자 갯수가 아닌  바이트 길이 한글(3byte)
 큰따옴표 사용가능 "Hllo, 世"  
 이스케이프 
 ```
-  \a: "alert r bell  
-  \b: backspae  
-  \f: form feed  
-  \n: newline  
-  \r: carriage return  
-  \t: tab  
-  \v: vertical tab  
-  \': single qute(only in the rune literal '\'')  
-  \": double quo (only within "..." literals)  
-  \\: backslash  
-  16진 이스케이프 /xhh  
-  8진 이스케이프 000  
-  백쿼트(`) 사 이스케이프 가능  
+	  \a: "alert r bell  
+	  \b: backspae  
+	  \f: form feed  
+	  \n: newline  
+	  \r: carriage return  
+	  \t: tab  
+	  \v: vertical tab  
+	  \': single qute(only in the rune literal '\'')  
+	  \": double quo (only within "..." literals)  
+	  \\: backslash  
+	  16진 이스케이프 /xhh  
+	  8진 이스케이프 000  
+	  백쿼트(`) 사 이스케이프 가능  
  ```
 ### 3.5.2 유니코드
 US-ASCII 
@@ -73,20 +73,123 @@ bytes.Buffer 타입을 사용하것 효율적
 ### 3.5.5 문자열과 숫자 사이의 변환
 정수를 문자열로 변환 2가지 방법
 ```
-  fmt.Sprintf
+  	fmt.Sprintf
 	strconv.Itoa("integer to ASCII")
 ```
 ```
-x := 123
-y := fmt.Sprintf("%d", x)
-fmt.Println(y, strconv.Itoa(x)) // "123 123"
+	x := 123
+	y := fmt.Sprintf("%d", x)
+	fmt.Println(y, strconv.Itoa(x)) // "123 123"
 ```
-FormatInt그리고 FormatUint다른 기본에 숫자를 포맷 할 수 있다
+FormatInt와 FormatUint다른 기수 숫자를 포맷 할 수 있다
 ```
-fmt.Println(strconv.FormatInt(int64(x), 2)) // "1111011"
+	fmt.Println(strconv.FormatInt(int64(x), 2)) // "1111011"
+```
+
+문자열 파싱
+```
+	x, err := strconv.Atoi("123") // x is an int
+	y, err := strconv.ParseInt("123", 10, 64) // base 10, up to 64 bits
+```
+
+### 3.6 상수  
+상수는 컴파일러가 값을 알고 있으며, 컴파일 시 평가되는 표현식
+const 선언, 변수와 유사하지만 명명된 값 실행중 바뀌는 것을 방지
+```
+	const pi = 3.14159 // math.Pi가 더 정확하다
+```
+
+그룹선언 
+```
+	const (
+	    e  = 2.71828
+	    pi = 3.14159
+	)
+```
+
+상수들이 그룹으로 선언되면 첫번째 그룹 외에는 오른쪽 표현식을 생략 가능. 
+묵시적 타입 재사용
+```
+	const (
+	    a = 1
+	    b
+	    c = 2
+	    d
+	)
+
+	fmt.Println(a, b, c, d) // "1 1 2 2"
+```
+
+### 3.6.1 상수 생성기 iota  
+const 선언에서 iota 값은 0에서 시작 목록 각항목 마다 1씩 증가
+```
+	type Weekday int
+
+	const (
+	    Sunday Weekday = iota
+	    Monday
+	    Tuesday
+	    Wednesday
+	    Thursday
+	    Friday
+	    Saturday
+	)
 ```
 
 ```
-x, err := strconv.Atoi("123") // x is an int
-y, err := strconv.ParseInt("123", 10, 64) // base 10, up to 64 bits
+	type Flags uint
+
+	const (
+	    FlagUp Flags = 1 << iota 
+	    FlagBroadcast            
+	    FlagLoopback             
+	    FlagPointToPoint         
+	    FlagMulticast            
+	)
+````
+
+3.6.2 타입 없는 상수
+GO 의 상수는 타입을 지정할수 있지만, 특정타입으로 지정되지 않을수도 있다  
+기본타입보다 더 큰 숫자 정밀도로 표현 이런한 상수에 대한 산술 연산은 기계 연산보다 더 정확하다  
+최소한 256비트의 정밀도 가정할 수 있다  
+
+math.Pi는 필요한곳 어디든 사용 가능  
 ```
+	var x float32 = math.Pi
+	var y float64 = math.Pi
+	var z complex128 = math.Pi
+```
+특정타입 지정시 타입변환 작업필요, 결과가 정확하지 않다
+```
+	const Pi64 float64 = math.Pi
+	var x float32 = float32(Pi64)
+	var y float64 = Pi64
+	var z complex128 = complex128(Pi64)
+```
+
+첫문장에서 변수에 타입이 활당되면  나머지 세문장처럼 묵시적으로 해당변수 타입을 가진다
+```
+	var f float64 = 3 + 0i // 타입없는 복소수 -> float64
+	f = 2                  // 타입없는 정수 -> float64
+	f = 1e123              // 타입없는 부동소수점 수 -> float64
+	f = 'a'                // 타입없는 룬 -> float64
+
+```
+위 문장은 다음과 같다
+```
+	var f float64 = float64(3 + 0i)
+	f = float64(2)
+	f = float64(1e123)
+	f = float64('a')
+```
+
+타입없이 변수 선언시 묵시적 타입 결정
+
+```
+	i := 0      // 타입없는 정수;        implicit int(0)
+	r := '\000' // 타입없는 룬;           implicit rune('\000')
+	f := 0.0    // 타입없는 부동소수점 수; implicit float64(0.0)
+	c := 0i     // 타입없는 복소수;        implicit complex128(0i)
+```
+
+주의 부동소수 와 복소수 명시적 크기가 지정된 float64와 complex128 로 변환되는 비대치성 주의
