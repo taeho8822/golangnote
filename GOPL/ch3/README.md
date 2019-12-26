@@ -5,12 +5,22 @@ true, false 값을 가진다
 다른 언어와 달리 0,1 사용불가
 == 또는 < 같은 비교연산자는 불리언 결과를 생성한다.
 권장사항 x == true 와 같은 중복된표현 지양해야 한다. x로 간소화
+
+```
+if 'a' <= c && c <= 'z' ||
+    'A' <= c && c <= 'Z' ||
+    '0' <= c && c <= '9' {
+    // ...ASCII letter or digit...
+}
+```
 	
 ### 3.5 문자열 (stirg)  
 텍스트를 담고있는 데이터  
 불변의 바이트 시퀀스  
 len(문자열) : 문자 갯수가 아닌  바이트 길이 한글(3byte)  
 문자열[i:j] : i째 인덱스에서 j번째 인덱까지 일부 바이트를 담는 새 문자열 생성  
+
+![3.4](./image/figure_3.4.PNG)  
   
 ### 3.5.1 문열 리터럴  
 큰따옴표 사용가능 "Hllo, 世"  
@@ -22,13 +32,13 @@ len(문자열) : 문자 갯수가 아닌  바이트 길이 한글(3byte)
   \n: newline  
   \r: carriage return  
   \t: tab  
-	\v: vertical tab  
-	\': single qute(only in the rune literal '\'')  
-	\": double quo (only within "..." literals)  
-	\\: backslash  
-	- 16진 이스케이프 /xhh  
-	- 8진 이스케이프 000  
-	- 백쿼트(`) 사 이스케이프 가능  
+  \v: vertical tab  
+  \': single qute(only in the rune literal '\'')  
+  \": double quo (only within "..." literals)  
+  \\: backslash  
+  16진 이스케이프 /xhh  
+  8진 이스케이프 000  
+  백쿼트(`) 사 이스케이프 가능  
  ```
 ### 3.5.2 유니코드
 US-ASCII 
@@ -39,10 +49,11 @@ Go애서 룬(rune) 이라 부르는 표준 숫자를 붙인 유니코드이다
 유니 코드  코드 포인트를 바이트 단위 가변 길이 인코딩이다
 1~4바이트
 ```
-	0xxxxxx	룬 0-127	(ASCII)
-	11xxxxx 10xxxxxx	128-2047	(값 <128 미사용)
-	110xxxx 10xxxxxx 10xxxxxx	2048−655	(값 <2048 미사용)
-	1110xxx 10xxxxxx 10xxxxxx 10xxxxx 65536−0x10ffff	(다른 값은 사용하지 않음)
+	0xxxxxx	rune 					0-127		(ASCII)
+	11xxxxx 10xxxxxx				128-2047	(값 <128 미사용)
+	110xxxx 10xxxxxx 10xxxxxx			2048−655	(값 <2048 미사용)
+	1110xxx 10xxxxxx 10xxxxxx 10xxxxxx		65536−0x10ffff	(다른 값은 사용하지 않음)
+	
 	\uhhh 16비트값 , Uhhhhhhhh 32비트값
 ```
 문자 길이
