@@ -291,7 +291,160 @@ func main() {
 	}
 }
 ```
+### for
 
+```
+//For문(1)
+package main
+
+import "fmt"
+
+func main() {
+	//반복문 - For
+	//Go에서 유일한 반복문
+	//다양한 사용법 숙지
+
+	//예제1
+	for i := 0; i < 5; i++ {
+		fmt.Println("ex1 : ", i)
+	}
+
+	//에러 발생1
+	/*
+		for i := 0; i < 5; i++
+		{
+			fmt.Println("ex1 : ", i)
+		}
+	*/
+
+	//에러 발생2
+	/*
+		for i := 0; i < 5; i++
+			fmt.Println("ex1 : ", i)
+	*/
+
+	//예제2 (무한 루프)
+	/*
+		for {
+			fmt.Println("ex2 : Hello, Golang!")
+			fmt.Println("ex2 : Infinite loop!")
+		}
+	*/
+
+	//예제3 (Range용법)
+	loc := []string{"Seoul", "Busan", "Incheon"}
+	for index, name := range loc {
+		fmt.Println("ex3 :", index, name)
+	}
+}
+
+```
+```
+//For문(2)
+package main
+
+import "fmt"
+
+func main() {
+
+	//예제1
+	sum1 := 0
+
+	for i := 0; i <= 100; i++ {
+		sum1 += i
+	}
+	fmt.Println("ex1 : ", sum1)
+
+	//예제2
+	sum2, i := 0, 0
+
+	for i <= 100 {
+		sum2 += i
+		i++
+		//i := i++ //에러 발생 (후치 연산 반환 값 X)
+	}
+	fmt.Println("ex2 : ", sum2)
+
+	//예제3
+	sum3, i := 0, 0
+
+	for {
+		if i > 100 {
+			break
+		}
+		sum3 += i
+		i++
+	}
+	fmt.Println("ex3 : ", sum2)
+
+	//예제4
+	for i, j := 0, 0; i <= 10; i, j = i+1, j+10 {
+		fmt.Println("ex3 : ", i, j)
+	}
+
+	//에러 발생
+	/*
+		for i, j := 0, 0; i <= 10; i++, j += 10 {
+			fmt.Println("ex3 : ", i, j)
+		}
+	*/
+}
+
+```
+```
+//For문(3)
+package main
+
+import "fmt"
+
+func main() {
+
+	//예제1
+	sum, i := 0, 0
+
+	for {
+		if i > 100 {
+			break
+		}
+		sum += i
+		i++
+	}
+	fmt.Println("ex1 : ", sum)
+
+	//예제2
+Loop1:
+	//fmt.Println("break Loop") //에러 발생(Loop 레이블 밑에 소스코드)
+	for i := 0; i < 5; i++ {
+		for j := 0; j < 5; j++ {
+			if i == 2 && j == 4 {
+				break Loop1
+			}
+			fmt.Println("ex2 : ", i, j)
+		}
+	}
+
+	//예제3
+	for i := 0; i < 10; i++ {
+		if i%2 == 0 {
+			continue
+		}
+		fmt.Println("ex3 : ", i)
+	}
+
+	//예제4
+Loop2:
+	//fmt.Println("continue Loop") //에러 발생(Loop 레이블 밑에 소스코드)
+	for i := 0; i < 3; i++ {
+		for j := 0; j < 3; j++ {
+			if i == 1 && j == 2 {
+				continue Loop2
+			}
+			fmt.Println("ex4 : ", i, j)
+		}
+	}
+}
+
+```
 
 ### golang 특징
 
